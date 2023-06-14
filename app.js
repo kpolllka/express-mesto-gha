@@ -22,7 +22,6 @@ app.use((req, res, next) => {
 app.use(express.json());
 app.use(routerUser);
 app.use(routerCards);
-// routerUser.use((req, res) => res.status(ERROR_NOT_FOUND).send({ message: 'Страница' }));
 routerCards.use((req, res) => res.status(ERROR_NOT_FOUND).send({ message: MSG_ERROR_NOT_FOUND }));
 
 app.listen(PORT, () => {
