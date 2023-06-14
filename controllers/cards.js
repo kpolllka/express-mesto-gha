@@ -1,6 +1,7 @@
 const Card = require('../models/card');
 
 const {
+  STATUS_CREATE,
   ERROR_CODE,
   ERROR_NOT_FOUND,
   ERROR_SERVER,
@@ -15,7 +16,7 @@ const createCard = (req, res) => {
   const ownerID = req.user._id;
 
   Card.create({ name, link, owner: ownerID })
-    .then((card) => res.send({ data: card }))
+    .then((card) => res.status(STATUS_CREATE).send({ data: card }))
     .catch((err) => {
       if (err.name === 'ValidationError') {
         res.status(ERROR_CODE).send({ message: MSG_ERROR_CODE + err.message });

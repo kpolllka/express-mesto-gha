@@ -1,6 +1,7 @@
 const User = require('../models/user');
 
 const {
+  STATUS_CREATE,
   ERROR_CODE,
   ERROR_NOT_FOUND,
   ERROR_SERVER,
@@ -14,7 +15,7 @@ const createUser = (req, res) => {
   const { name, about, avatar } = req.body;
 
   User.create({ name, about, avatar })
-    .then((user) => res.send({ data: user }))
+    .then((user) => res.status(STATUS_CREATE).send({ data: user }))
     .catch((err) => {
       if (err.name === 'ValidationError') {
         res.status(ERROR_CODE).send({ message: MSG_ERROR_CODE + err.message });
