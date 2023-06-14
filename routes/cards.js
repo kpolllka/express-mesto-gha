@@ -11,6 +11,6 @@ routerCards.delete('/cards/:_id', delCard); // Удаляем карточку
 routerCards.put('/cards/:_id/likes', likeCard); // Лайк карточки
 routerCards.delete('/cards/:_id/likes', dislikeCard); // Дизлайк карточки
 
-// routerCards.use((req, res) =>res.status(ERROR_NOT_FOUND).send({ message: MSG_ERROR_NOT_FOUND }));
+// routerCards.use('/*', (req, res) => res.status(ERROR_NOT_FOUND).send({ message: MSG_ERROR_NOT_FOUND }));
 
 module.exports = routerCards;

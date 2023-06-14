@@ -2,6 +2,8 @@ const express = require('express');
 const mongoose = require('mongoose');
 const routerUser = require('./routes/users');
 const routerCards = require('./routes/cards');
+const { ERROR_NOT_FOUND } = require('./errors/errors');
+const { MSG_ERROR_NOT_FOUND } = require('./errors/errors');
 
 const { PORT = 3000 } = process.env;
 const app = express();
@@ -20,6 +22,8 @@ app.use((req, res, next) => {
 app.use(express.json());
 app.use(routerUser);
 app.use(routerCards);
+// routerUser.use((req, res) => res.status(ERROR_NOT_FOUND).send({ message: 'Страница' }));
+routerCards.use((req, res) => res.status(ERROR_NOT_FOUND).send({ message: MSG_ERROR_NOT_FOUND }));
 
 app.listen(PORT, () => {
   console.log(`App listening on port ${PORT}`); // Если всё работает, консоль покажет, какой порт приложение слушает
