@@ -4,9 +4,9 @@ const {
   ERROR_CODE,
   ERROR_NOT_FOUND,
   ERROR_SERVER,
-  // MSG_ERROR_CODE,
-  // MSG_ERROR_NOT_FOUND,
-  // MSG_ERROR_SERVER,
+  MSG_ERROR_CODE,
+  MSG_ERROR_NOT_FOUND,
+  MSG_ERROR_SERVER,
 } = require('../errors/errors');
 
 // Создание новой карточки
@@ -18,9 +18,9 @@ const createCard = (req, res) => {
     .then((card) => res.send({ data: card }))
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        res.status(ERROR_CODE).send({ message: err.message });
+        res.status(ERROR_CODE).send({ message: MSG_ERROR_CODE + err.message });
       } else {
-        res.status(ERROR_SERVER).send({ message: err.message });
+        res.status(ERROR_SERVER).send({ message: MSG_ERROR_SERVER + err.message });
       }
     });
 };
@@ -29,7 +29,7 @@ const createCard = (req, res) => {
 const getCards = (req, res) => {
   Card.find({})
     .then((card) => res.send({ data: card }))
-    .catch((err) => res.status(ERROR_SERVER).send({ message: err.message }));
+    .catch((err) => res.status(ERROR_SERVER).send({ message: MSG_ERROR_SERVER + err.message }));
 };
 
 // Удаление карточки
@@ -39,16 +39,16 @@ const delCard = (req, res) => {
   Card.findByIdAndRemove(cardId)
     .then((card) => {
       if (!card) {
-        res.status(ERROR_NOT_FOUND).send({ message: 'MSG_ERROR_NOT_FOUND' });
+        res.status(ERROR_NOT_FOUND).send({ message: MSG_ERROR_NOT_FOUND });
         return;
       }
       res.send({ data: card });
     })
     .catch((err) => {
       if (err.name === 'CastError') {
-        res.status(ERROR_CODE).send({ message: err.message });
+        res.status(ERROR_CODE).send({ message: MSG_ERROR_CODE + err.message });
       } else {
-        res.status(ERROR_SERVER).send({ message: err.message });
+        res.status(ERROR_SERVER).send({ message: MSG_ERROR_SERVER + err.message });
       }
     });
 };
@@ -61,16 +61,16 @@ const likeCard = (req, res) => {
   Card.findByIdAndUpdate(cardId, { $addToSet: { likes: ownerID } }, { new: true })
     .then((card) => {
       if (!card) {
-        res.status(ERROR_NOT_FOUND).send({ message: 'MSG_ERROR_NOT_FOUND' });
+        res.status(ERROR_NOT_FOUND).send({ message: MSG_ERROR_NOT_FOUND });
         return;
       }
       res.send({ data: card });
     })
     .catch((err) => {
       if (err.name === 'CastError') {
-        res.status(ERROR_CODE).send({ message: err.message });
+        res.status(ERROR_CODE).send({ message: MSG_ERROR_CODE + err.message });
       } else {
-        res.status(ERROR_SERVER).send({ message: err.message });
+        res.status(ERROR_SERVER).send({ message: MSG_ERROR_SERVER + err.message });
       }
     });
 };
@@ -83,16 +83,16 @@ function dislikeCard(req, res) {
   Card.findByIdAndUpdate(cardId, { $pull: { likes: ownerID } }, { new: true })
     .then((card) => {
       if (!card) {
-        res.status(ERROR_NOT_FOUND).send({ message: 'MSG_ERROR_NOT_FOUND' });
+        res.status(ERROR_NOT_FOUND).send({ message: MSG_ERROR_NOT_FOUND });
         return;
       }
       res.send({ data: card });
     })
     .catch((err) => {
       if (err.name === 'CastError') {
-        res.status(ERROR_CODE).send({ message: err.message });
+        res.status(ERROR_CODE).send({ message: MSG_ERROR_CODE + err.message });
       } else {
-        res.status(ERROR_SERVER).send({ message: err.message });
+        res.status(ERROR_SERVER).send({ message: MSG_ERROR_SERVER + err.message });
       }
     });
 }

@@ -4,9 +4,9 @@ const {
   ERROR_CODE,
   ERROR_NOT_FOUND,
   ERROR_SERVER,
-  // MSG_ERROR_CODE,
-  // MSG_ERROR_NOT_FOUND,
-  // MSG_ERROR_SERVER,
+  MSG_ERROR_CODE,
+  MSG_ERROR_NOT_FOUND,
+  MSG_ERROR_SERVER,
 } = require('../errors/errors');
 
 // Создание нового пользователя
@@ -17,9 +17,9 @@ const createUser = (req, res) => {
     .then((user) => res.send({ data: user }))
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        res.status(ERROR_CODE).send({ message: err.message });
+        res.status(ERROR_CODE).send({ message: MSG_ERROR_CODE + err.message });
       } else {
-        res.status(ERROR_SERVER).send({ message: err.message });
+        res.status(ERROR_SERVER).send({ message: MSG_ERROR_SERVER + err.message });
       }
     });
 };
@@ -29,7 +29,7 @@ const getUsers = (req, res) => {
   User.find({})
     .then((user) => res.send({ data: user }))
     .catch((err) => {
-      res.status(ERROR_SERVER).send({ message: err.message });
+      res.status(ERROR_SERVER).send({ message: MSG_ERROR_SERVER + err.message });
     });
 };
 
@@ -40,17 +40,17 @@ const getUserId = (req, res) => {
   User.findById(userId)
     .then((user) => {
       if (!user) {
-        res.status(ERROR_NOT_FOUND).send({ message: 'MSG_ERROR_NOT_FOUND' });
+        res.status(ERROR_NOT_FOUND).send({ message: MSG_ERROR_NOT_FOUND });
         return;
       }
       res.send({ data: user });
     })
     .catch((err) => {
       if (err.name === 'CastError') {
-        res.status(ERROR_CODE).send({ message: err.message });
+        res.status(ERROR_CODE).send({ message: MSG_ERROR_CODE + err.message });
         return;
       }
-      res.status(ERROR_SERVER).send({ message: err.message });
+      res.status(ERROR_SERVER).send({ message: MSG_ERROR_SERVER + err.message });
     });
 };
 
@@ -62,17 +62,17 @@ const editUser = (req, res) => {
   User.findByIdAndUpdate(owner, { name, about }, { new: true, runValidators: true })
     .then((user) => {
       if (!user) {
-        res.status(ERROR_NOT_FOUND).send({ message: 'MSG_ERROR_NOT_FOUND' });
+        res.status(ERROR_NOT_FOUND).send({ message: MSG_ERROR_NOT_FOUND });
         return;
       }
       res.send({ data: user });
     })
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        res.status(ERROR_CODE).send({ message: err.message });
+        res.status(ERROR_CODE).send({ message: MSG_ERROR_CODE + err.message });
         return;
       }
-      res.status(ERROR_SERVER).send({ message: err.message });
+      res.status(ERROR_SERVER).send({ message: MSG_ERROR_SERVER + err.message });
     });
 };
 
@@ -84,17 +84,17 @@ const editAvatar = (req, res) => {
   User.findByIdAndUpdate(owner, { avatar }, { new: true })
     .then((user) => {
       if (!user) {
-        res.status(ERROR_NOT_FOUND).send({ message: 'MSG_ERROR_NOT_FOUND' });
+        res.status(ERROR_NOT_FOUND).send({ message: MSG_ERROR_NOT_FOUND });
         return;
       }
       res.send({ data: user });
     })
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        res.status(ERROR_CODE).send({ message: err.message });
+        res.status(ERROR_CODE).send({ message: MSG_ERROR_CODE + err.message });
         return;
       }
-      res.status(ERROR_SERVER).send({ message: err.message });
+      res.status(ERROR_SERVER).send({ message: MSG_ERROR_SERVER + err.message });
     });
 };
 
