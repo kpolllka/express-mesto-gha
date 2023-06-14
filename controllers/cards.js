@@ -1,3 +1,55 @@
+// const Card = require('../models/card');
+
+// // Создание новой карточки
+// const createCard = (req, res) => {
+//   const { name, link } = req.body;
+//   const ownerID = req.user._id;
+
+//   Card.create({ name, link, owner: ownerID })
+//     .then((card) => res.send({ data: card }))
+//     .catch((err) => res.status(500).send({ message: err.message }));
+// };
+
+// // Получение всех карточек
+// const getCards = (req, res) => {
+//   Card.find({})
+//     .then((card) => res.send({ data: card }))
+//     .catch((err) => res.status(500).send({ message: err.message }));
+// };
+
+// // Удаление карточки
+// const delCard = (req, res) => {
+//   const cardId = req.params._id;
+
+//   Card.findByIdAndRemove(cardId)
+//     .then((card) => res.send({ data: card }))
+//     .catch((err) => res.status(500).send({ message: err.message }));
+// };
+
+// // Лайк карточки
+// const likeCard = (req, res) => {
+//   const ownerID = req.user._id;
+//   const cardId = req.params._id;
+
+//   Card.findByIdAndUpdate(cardId, { $addToSet: { likes: ownerID } }, { new: true })
+//     .then((card) => res.send({ data: card }))
+//     .catch((err) => res.status(500).send({ message: err.message }));
+// };
+
+// // Дизлайк карточки
+// const dislikeCard = (req, res) => {
+//   const ownerID = req.user._id;
+//   const cardId = req.params._id;
+
+//   Card.findByIdAndUpdate(cardId, { $pull: { likes: ownerID } }, { new: true })
+//     .then((card) => res.send({ data: card }))
+//     .catch((err) => res.status(500).send({ message: err.message }));
+// };
+
+// module.exports = {
+//   createCard, getCards, delCard, likeCard, dislikeCard,
+// };
+
 const Card = require('../models/card');
 
 const {
@@ -29,7 +81,9 @@ const createCard = (req, res) => {
 const getCards = (req, res) => {
   Card.find({})
     .then((card) => res.send({ data: card }))
-    .catch((err) => res.status(ERROR_SERVER).send({ message: MSG_ERROR_SERVER + err.message }));
+    .catch((err) => {
+      res.status(ERROR_SERVER).send({ message: MSG_ERROR_SERVER + err.message });
+    });
 };
 
 // Удаление карточки
