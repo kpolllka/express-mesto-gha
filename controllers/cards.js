@@ -41,13 +41,7 @@ const delCard = (req, res) => {
 
   Card.findByIdAndRemove(cardId)
     .orFail(new Error('NotValidId'))
-    .then((card) => {
-      // if (!card) {
-      //   res.status(ERROR_NOT_FOUND).send({ message: MSG_ERROR_NOT_FOUND });
-      //   return;
-      // }
-      res.send({ data: card });
-    })
+    .then((card) => res.send({ data: card }))
     .catch((err) => {
       if (err.name === 'CastError') {
         res.status(ERROR_CODE).send({ message: MSG_ERROR_CODE + err.message });
@@ -66,13 +60,7 @@ const likeCard = (req, res) => {
 
   Card.findByIdAndUpdate(cardId, { $addToSet: { likes: ownerID } }, { new: true })
     .orFail(new Error('NotValidId'))
-    .then((card) => {
-      // if (!card) {
-      //   res.status(ERROR_NOT_FOUND).send({ message: MSG_ERROR_NOT_FOUND });
-      //   return;
-      // }
-      res.send({ data: card });
-    })
+    .then((card) => res.send({ data: card }))
     .catch((err) => {
       if (err.name === 'CastError') {
         res.status(ERROR_CODE).send({ message: MSG_ERROR_CODE + err.message });
@@ -91,13 +79,7 @@ function dislikeCard(req, res) {
 
   Card.findByIdAndUpdate(cardId, { $pull: { likes: ownerID } }, { new: true })
     .orFail(new Error('NotValidId'))
-    .then((card) => {
-      // if (!card) {
-      //   res.status(ERROR_NOT_FOUND).send({ message: MSG_ERROR_NOT_FOUND });
-      //   return;
-      // }
-      res.send({ data: card });
-    })
+    .then((card) => res.send({ data: card }))
     .catch((err) => {
       if (err.name === 'CastError') {
         res.status(ERROR_CODE).send({ message: MSG_ERROR_CODE + err.message });

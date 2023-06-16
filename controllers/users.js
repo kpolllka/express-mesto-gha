@@ -59,13 +59,7 @@ const editUser = (req, res) => {
 
   User.findByIdAndUpdate(owner, { name, about }, { new: true, runValidators: true })
     .orFail(new Error('NotValidId'))
-    .then((user) => {
-      // if (!user) {
-      //   res.status(ERROR_NOT_FOUND).send({ message: MSG_ERROR_NOT_FOUND });
-      //   return;
-      // }
-      res.send({ data: user });
-    })
+    .then((user) => res.send({ data: user }))
     .catch((err) => {
       if (err.name === 'ValidationError') {
         res.status(ERROR_CODE).send({ message: MSG_ERROR_CODE + err.message });
@@ -84,13 +78,7 @@ const editAvatar = (req, res) => {
 
   User.findByIdAndUpdate(owner, { avatar }, { new: true })
     .orFail(new Error('NotValidId'))
-    .then((user) => {
-      // if (!user) {
-      //   res.status(ERROR_NOT_FOUND).send({ message: MSG_ERROR_NOT_FOUND });
-      //   return;
-      // }
-      res.send({ data: user });
-    })
+    .then((user) => res.send({ data: user }))
     .catch((err) => {
       if (err.name === 'ValidationError') {
         res.status(ERROR_CODE).send({ message: MSG_ERROR_CODE + err.message });
