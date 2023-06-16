@@ -39,16 +39,13 @@ const getUserId = (req, res) => {
   const userId = req.params._id;
 
   User.findById(userId)
-    .then((user) => {
-      if (!user) {
-        res.status(ERROR_NOT_FOUND).send({ message: MSG_ERROR_NOT_FOUND });
-        return;
-      }
-      res.send({ data: user });
-    })
+    .orFail(new Error('NotValidId'))
+    .then((user) => res.send({ data: user }))
     .catch((err) => {
       if (err.name === 'CastError') {
         res.status(ERROR_CODE).send({ message: MSG_ERROR_CODE + err.message });
+      } else if (err.message === 'NotValidId') {
+        res.status(ERROR_NOT_FOUND).send({ message: MSG_ERROR_NOT_FOUND });
         return;
       }
       res.status(ERROR_SERVER).send({ message: MSG_ERROR_SERVER + err.message });
@@ -61,16 +58,19 @@ const editUser = (req, res) => {
   const owner = req.user._id;
 
   User.findByIdAndUpdate(owner, { name, about }, { new: true, runValidators: true })
+    .orFail(new Error('NotValidId'))
     .then((user) => {
-      if (!user) {
-        res.status(ERROR_NOT_FOUND).send({ message: MSG_ERROR_NOT_FOUND });
-        return;
-      }
+      // if (!user) {
+      //   res.status(ERROR_NOT_FOUND).send({ message: MSG_ERROR_NOT_FOUND });
+      //   return;
+      // }
       res.send({ data: user });
     })
     .catch((err) => {
       if (err.name === 'ValidationError') {
         res.status(ERROR_CODE).send({ message: MSG_ERROR_CODE + err.message });
+      } else if (err.message === 'NotValidId') {
+        res.status(ERROR_NOT_FOUND).send({ message: MSG_ERROR_NOT_FOUND });
         return;
       }
       res.status(ERROR_SERVER).send({ message: MSG_ERROR_SERVER + err.message });
@@ -83,16 +83,19 @@ const editAvatar = (req, res) => {
   const owner = req.user._id;
 
   User.findByIdAndUpdate(owner, { avatar }, { new: true })
+    .orFail(new Error('NotValidId'))
     .then((user) => {
-      if (!user) {
-        res.status(ERROR_NOT_FOUND).send({ message: MSG_ERROR_NOT_FOUND });
-        return;
-      }
+      // if (!user) {
+      //   res.status(ERROR_NOT_FOUND).send({ message: MSG_ERROR_NOT_FOUND });
+      //   return;
+      // }
       res.send({ data: user });
     })
     .catch((err) => {
       if (err.name === 'ValidationError') {
         res.status(ERROR_CODE).send({ message: MSG_ERROR_CODE + err.message });
+      } else if (err.message === 'NotValidId') {
+        res.status(ERROR_NOT_FOUND).send({ message: MSG_ERROR_NOT_FOUND });
         return;
       }
       res.status(ERROR_SERVER).send({ message: MSG_ERROR_SERVER + err.message });
