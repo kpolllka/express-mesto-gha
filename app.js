@@ -1,5 +1,6 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const helmet = require('helmet');
 const routerUser = require('./routes/users');
 const routerCards = require('./routes/cards');
 const { ERROR_NOT_FOUND } = require('./errors/errors');
@@ -20,6 +21,7 @@ app.use((req, res, next) => {
 });
 
 app.use(express.json());
+app.use(helmet());
 app.use(routerUser);
 app.use(routerCards);
 routerCards.use((req, res) => res.status(ERROR_NOT_FOUND).send({ message: MSG_ERROR_NOT_FOUND }));
