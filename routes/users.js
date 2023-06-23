@@ -25,7 +25,7 @@ routerUser.patch('/users/me', celebrate({ // Редактируем данные
 
 routerUser.patch('/users/me/avatar', celebrate({ // Редактируем аватар пользователя
   body: Joi.object().required().keys({
-    avatar: Joi.string().required().regex(/^https?:\/\/(?:[a-z0-9-]+\.)+[a-z]{2,6}(?:\/[^/#?]+)+\.(?:jpg|gif|png)$/),
+    avatar: Joi.string().required().regex(/^(http|https):\/\/[\w.-]+(\/[\w-./?#@$!&'()*+,;=]*)?#?$/i),
   }),
 }), editAvatar);
 
