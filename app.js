@@ -1,7 +1,7 @@
 require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
-// const helmet = require('helmet');
+const helmet = require('helmet');
 const cookieParser = require('cookie-parser');
 const { celebrate, Joi } = require('celebrate');
 const { errors } = require('celebrate');
@@ -21,7 +21,7 @@ mongoose.connect('mongodb://127.0.0.1:27017/mestodb', {
 });
 
 app.use(express.json());
-// app.use(helmet());
+app.use(helmet());
 
 app.post('/signup', celebrate({
   body: Joi.object().keys({
@@ -33,8 +33,6 @@ app.post('/signup', celebrate({
   }),
 }), createUser);
 
-// app.post('/signup', createUser);
-
 app.post('/signin', celebrate({
   body: Joi.object().keys({
     email: Joi.string().required().email(),
@@ -42,8 +40,6 @@ app.post('/signin', celebrate({
   }),
 }), login);
 app.use(auth);
-
-// app.post('/signin', login);
 
 app.use(cookieParser());
 
