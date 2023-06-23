@@ -30,8 +30,8 @@ const userSchema = new mongoose.Schema({
   },
   email: {
     type: String,
-    trim: true, // обрезает пробелы с обоих сторон
-    lowercase: true,
+    // trim: true, // обрезает пробелы с обоих сторон
+    // lowercase: true,
     unique: true,
     required: [true, 'поле "email" должно быть заполнено'],
     validate: {
@@ -42,7 +42,7 @@ const userSchema = new mongoose.Schema({
   password: {
     type: String,
     select: false, // что бы не выводился пароль
-    trim: true, // обрезает пробелы с обоих сторон
+    // trim: true, // обрезает пробелы с обоих сторон
     required: [true, 'поле "password" должно быть заполнено'],
     minlength: [3, 'минимальная длина поля "password" - 3 символа'],
   },

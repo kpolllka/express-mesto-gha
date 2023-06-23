@@ -17,15 +17,15 @@ routerUser.get('/users/:_id', celebrate({ // Получаем пользоват
 }), getUserId);
 
 routerUser.patch('/users/me', celebrate({ // Редактируем данные пользователя
-  body: Joi.object().keys({
+  body: Joi.object().required().keys({
     name: Joi.string().required().min(2).max(30),
     about: Joi.string().required().min(2).max(30),
   }),
 }), editUser);
 
 routerUser.patch('/users/me/avatar', celebrate({ // Редактируем аватар пользователя
-  body: Joi.object().keys({
-    avatar: Joi.string().required().pattern(/^https?:\/\/(?:[a-z0-9-]+\.)+[a-z]{2,6}(?:\/[^/#?]+)+\.(?:jpg|gif|png)$/),
+  body: Joi.object().required().keys({
+    avatar: Joi.string().required().regex(/^https?:\/\/(?:[a-z0-9-]+\.)+[a-z]{2,6}(?:\/[^/#?]+)+\.(?:jpg|gif|png)$/),
   }),
 }), editAvatar);
 
