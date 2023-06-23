@@ -14,7 +14,9 @@ const createUser = (req, res, next) => {
   bcrypt.hash(password, 10)
     .then((hash) => User.create({ name, about, avatar, email, password: hash }))
     // eslint-disable-next-line max-len
-    .then((user) => res.status(STATUS_CREATE).send({ email: user.email, name: user.name, about: user.about, avatar: user.avatar, _id: user._id }))
+    .then((user) => res.status(STATUS_CREATE).send({ name: user.name, about: user.about, avatar: user.avatar, email: user.email, _id: user._id }))
+    // eslint-disable-next-line max-len
+    // .then((user) => res.status(STATUS_CREATE).send({ name: user.name, about: user.about, avatar: user.avatar, email: user.email, _id: user._id }))
     .catch((err) => {
       if (err.name === 'ValidationError') {
         next(new BadRequest(err.message));
