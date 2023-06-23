@@ -12,7 +12,7 @@ const createCard = (req, res, next) => {
   const ownerID = req.user._id;
 
   Card.create({ name, link, owner: ownerID })
-    .then((card) => res.status(STATUS_CREATE).send({ data: card }))
+    .then((card) => res.status(STATUS_CREATE).send({ card }))
     .catch((err) => {
       if (err.name === 'ValidationError') {
         next(new BadRequest(err.message));
