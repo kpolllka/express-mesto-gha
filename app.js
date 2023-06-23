@@ -1,10 +1,15 @@
+require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const helmet = require('helmet');
+const cookieParser = require('cookie-parser');
+const { celebrate, Joi } = require('celebrate');
 const routerUser = require('./routes/users');
 const routerCards = require('./routes/cards');
-const { ERROR_NOT_FOUND } = require('./errors/errors');
-const { MSG_ERROR_NOT_FOUND } = require('./errors/errors');
+const { createUser, login } = require('./controllers/users');
+const auth = require('./middlewares/auth');
+const NotFoundError = require('./errors/NotFoundError');
+const errorHandler = require('./middlewares/errors');
 
 const { PORT = 3000 } = process.env;
 const app = express();
@@ -13,18 +18,35 @@ mongoose.connect('mongodb://127.0.0.1:27017/mestodb', {
   useNewUrlParser: true,
 });
 
-app.use((req, res, next) => {
-  req.user = {
-    _id: '648739c3a7b0503a88bbcb49',
-  };
-  next();
-});
-
 app.use(express.json());
 app.use(helmet());
+
+app.post('/signup', celebrate({
+  body: Joi.object().keys({
+    name: Joi.string().min(2).max(30),
+    about: Joi.string().min(2).max(30),
+    avatar: Joi.string().pattern(/^https?:\/\/(?:[a-z0-9-]+\.)+[a-z]{2,6}(?:\/[^/#?]+)+\.(?:jpg|gif|png)$/),
+    email: Joi.string().required().email(),
+    password: Joi.string().required().min(3),
+  }),
+}), createUser);
+
+app.use(auth);
+
+app.post('/signin', celebrate({
+  body: Joi.object().keys({
+    email: Joi.string().required().email(),
+    password: Joi.string().required(3),
+  }),
+}), login);
+app.use(cookieParser());
+
 app.use(routerUser);
 app.use(routerCards);
-routerCards.use((req, res) => res.status(ERROR_NOT_FOUND).send({ message: MSG_ERROR_NOT_FOUND }));
+
+routerCards.use((req, res, next) => next(new NotFoundError('Запрошенный URL-адрес не найден')));
+
+app.use(errorHandler);
 
 app.listen(PORT, () => {
   console.log(`App listening on port ${PORT}`); // Если всё работает, консоль покажет, какой порт приложение слушает

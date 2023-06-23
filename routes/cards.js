@@ -1,12 +1,34 @@
+const { celebrate, Joi } = require('celebrate');
 const routerCards = require('express').Router();
-const {
-  createCard, getCards, delCard, likeCard, dislikeCard,
-} = require('../controllers/cards');
+// eslint-disable-next-line object-curly-newline
+const { createCard, getCards, delCard, likeCard, dislikeCard } = require('../controllers/cards');
 
-routerCards.post('/cards', createCard); // Создаем новую карточку
+routerCards.post('/cards', celebrate({ // Создаем новую карточку
+  body: Joi.object().keys({
+    name: Joi.string().required().min(2).max(30),
+    link: Joi.string().required().min(2).pattern(/^https?:\/\/(?:[a-z0-9-]+\.)+[a-z]{2,6}(?:\/[^/#?]+)+\.(?:jpg|gif|png)$/),
+  }),
+
+}), createCard);
+
 routerCards.get('/cards', getCards); // Получаем все карточки
-routerCards.delete('/cards/:_id', delCard); // Удаляем карточку
-routerCards.put('/cards/:_id/likes', likeCard); // Лайк карточки
-routerCards.delete('/cards/:_id/likes', dislikeCard); // Дизлайк карточки
+
+routerCards.delete('/cards/:_id', celebrate({ // Удаляем карточку
+  params: Joi.object().keys({
+    _id: Joi.string().required().hex().length(24),
+  }),
+}), delCard);
+
+routerCards.put('/cards/:_id/likes', celebrate({ // Лайк карточки
+  params: Joi.object().keys({
+    _id: Joi.string().required().hex().length(24),
+  }),
+}), likeCard);
+
+routerCards.delete('/cards/:_id/likes', celebrate({ // Дизлайк карточки
+  params: Joi.object().keys({
+    _id: Joi.string().required().hex().length(24),
+  }),
+}), dislikeCard);
 
 module.exports = routerCards;
