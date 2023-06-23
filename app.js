@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 const helmet = require('helmet');
 const cookieParser = require('cookie-parser');
 const { celebrate, Joi } = require('celebrate');
+const { errors } = require('celebrate');
 const routerUser = require('./routes/users');
 const routerCards = require('./routes/cards');
 const { createUser, login } = require('./controllers/users');
@@ -31,6 +32,8 @@ app.post('/signup', celebrate({
   }),
 }), createUser);
 
+// app.post('/signup', createUser);
+
 app.use(auth);
 
 app.post('/signin', celebrate({
@@ -39,6 +42,9 @@ app.post('/signin', celebrate({
     password: Joi.string().required(3),
   }),
 }), login);
+
+// app.post('/signin', login);
+
 app.use(cookieParser());
 
 app.use(routerUser);
@@ -46,6 +52,7 @@ app.use(routerCards);
 
 routerCards.use((req, res, next) => next(new NotFoundError('Запрошенный URL-адрес не найден')));
 
+app.use(errors());
 app.use(errorHandler);
 
 app.listen(PORT, () => {
