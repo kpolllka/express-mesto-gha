@@ -34,14 +34,13 @@ app.post('/signup', celebrate({
 
 // app.post('/signup', createUser);
 
-app.use(auth);
-
 app.post('/signin', celebrate({
   body: Joi.object().keys({
     email: Joi.string().required().email(),
     password: Joi.string().required(3),
   }),
 }), login);
+app.use(auth);
 
 // app.post('/signin', login);
 
