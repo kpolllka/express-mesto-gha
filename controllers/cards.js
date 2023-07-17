@@ -29,6 +29,7 @@ const getCards = (req, res, next) => {
     .catch(next);
 };
 
+// Удаление карточки
 const delCard = (req, res, next) => {
   const cardId = req.params._id;
   const userId = req.user._id;
