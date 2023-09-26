@@ -1,13 +1,22 @@
 [![Tests](../../actions/workflows/tests-13-sprint.yml/badge.svg)](../../actions/workflows/tests-13-sprint.yml) [![Tests](../../actions/workflows/tests-14-sprint.yml/badge.svg)](../../actions/workflows/tests-14-sprint.yml)
 # Проект Mesto Russia Frontend + Backend
 ## Ссылка на репозиторий
-https://github.com/kpolllka/express-mesto-gha
+Frontend : https://github.com/kpolllka/react-mesto-auth
+Backend: https://github.com/kpolllka/express-mesto-gha
 
 ## Директории
 `/routes` — папка с файлами роутера   
 `/controllers` — папка с файлами контроллеров пользователя и карточки   
 `/models` — папка с файлами описания схем пользователя и карточки   
 Остальные директории вспомогательные, создаются при необходимости разработчиком
+
+## Технологии и функциональность:
+* Созданы схемы и модели пользователей и карточек.
+* Созданы контроллеры и роуты для пользователей и карточек.
+* Реализована централизованная обработка ошибок.
+* Создан middleware для авторизации.
+* Защита API авторизацией.
+* Валидация.
 
 ## Запуск проекта
 `npm run start` — запускает сервер   
